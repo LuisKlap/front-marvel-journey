@@ -1,0 +1,23 @@
+.min-h-screen {
+    position: relative;
+    background-image: url('/background-login.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.min-h-screen::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3); /* Sombra com 30% de opacidade */
+    backdrop-filter: blur(2px); /* Efeito de desfoque */
+    z-index: 1;
+}
+
+.min-h-screen > * {
+    position: relative;
+    z-index: 2;
+}
