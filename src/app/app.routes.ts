@@ -1,36 +1,14 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
+import { AuthComponent } from './features/auth/auth.component';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: '/login',
-    pathMatch: 'full',
-  },
-  {
-    path: 'login',
-    component: LoginComponent,
-    children: [
-      {
-        path: '',
-        component: LoginComponent
-      },
-      {
-        path: 'forgot-password',
-        component: LoginComponent
-      },
-      {
-        path: 'verification-code',
-        component: LoginComponent
-      },
-      {
-        path: 'reset-password',
-        component: LoginComponent
-      },
-      {
-        path: 'sign-up',
-        component: LoginComponent
-      }
-    ]
-  }
+  { path: '', redirectTo: 'auth/sign-in', pathMatch: 'full' },
+  { path: 'auth', component: AuthComponent, children: [
+    { path: 'sign-in', component: AuthComponent },
+    // { path: 'sign-up', component: SignUpComponent },
+    // { path: 'forgot-password', component: ForgotPasswordComponent },
+    // { path: 'verification-code', component: VerificationCodeComponent },
+    // { path: 'reset-password', component: ResetPasswordComponent },
+  ]},
+  { path: '**', redirectTo: 'auth/sign-in' } // Rota de fallback
 ];

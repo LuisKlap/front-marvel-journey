@@ -1,0 +1,21 @@
+<div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="bg-[#F8F8F8] flex flex-col rounded-2xl shadow-lg w-auto min-h-[524px]">
+        <div class="bg-[#961626] w-full h-auto rounded-t-2xl px-14 py-8 flex flex-col items-center justify-center">
+            <h1 class="text-5xl font-bold text-white">Marvel Journey</h1>
+            <p class="text-white font-semibold text-base mt-1">{{welcomeMessage}}</p>
+        </div>
+        <div
+            class="w-full min-h-[398px] h-full rounded-t-2xl flex flex-col items-center justify-between px-16 py-6 gap-4">
+            <ng-container [ngSwitch]="currentStep">
+                <app-sign-in *ngSwitchCase="'sign-in'" (navigate)="navigateTo($event)"></app-sign-in>
+                <app-sign-up *ngSwitchCase="'sign-up'" (navigate)="navigateTo($event)"></app-sign-up>
+                <app-forgot-password *ngSwitchCase="'forgot-password'"
+                    (navigate)="navigateTo($event)"></app-forgot-password>
+                <app-verification-code *ngSwitchCase="'verification-code'"
+                    (navigate)="navigateTo($event)"></app-verification-code>
+                <app-reset-password *ngSwitchCase="'reset-password'"
+                    (navigate)="navigateTo($event)"></app-reset-password>
+            </ng-container>
+        </div>
+    </div>
+</div>
