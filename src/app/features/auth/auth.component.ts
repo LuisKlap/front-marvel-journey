@@ -2,6 +2,10 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { SignInComponent } from './components/sign-in/sign-in.component';
+import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { VerificationCodeComponent } from './components/verification-code/verification-code.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @Component({
   selector: 'app-auth',
@@ -9,10 +13,10 @@ import { SignInComponent } from './components/sign-in/sign-in.component';
   imports: [
     CommonModule,
     SignInComponent,
-    // SignUpComponent,
-    // ForgotPasswordComponent,
-    // VerificationCodeComponent,
-    // ResetPasswordComponent,
+    SignUpComponent,
+    ForgotPasswordComponent,
+    VerificationCodeComponent,
+    ResetPasswordComponent,
   ],
   templateUrl: './auth.component.html',
   styleUrls: ['./auth.component.css'],
@@ -24,7 +28,7 @@ export class AuthComponent {
 
   constructor(private router: Router) { }
 
-  navigateTo(step: typeof this.currentStep): void {
+  navigateTo(step: 'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password'): void {
     this.currentStep = step;
   }
 

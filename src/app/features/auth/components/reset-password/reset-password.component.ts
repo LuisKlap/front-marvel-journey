@@ -1,16 +1,20 @@
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { CommonModule } from '@angular/common'; // Adicione esta linha
+import { Component,  ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reset-password',
-  imports: [FormBuilder, FormGroup, Validators],
+  standalone: true,
+  imports: [ReactiveFormsModule, CommonModule], // Adicione CommonModule aqui
   templateUrl: './reset-password.component.html',
-  styleUrl: './reset-password.component.css'
+  styleUrls: ['./reset-password.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ResetPasswordComponent {
-
+  
+  @Output() navigate = new EventEmitter<'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password'>();
+  
   resetPasswordForm: FormGroup;
   isLoading = false;
   errorMessage = '';
