@@ -1,1 +1,25 @@
-<p>verification-code works!</p>
+<div>
+    <form [formGroup]="verificationCodeForm" (ngSubmit)="onSubmit()">
+        <div class="mb-4 max-w-[368.63px]">
+            <label for="code" class="block text-sm font-medium text-[#181818]">Verification code</label>
+            <input type="text" id="code" formControlName="code" placeholder="Enter the code you received"
+                class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
+            <div class="error"
+                *ngIf="verificationCodeForm.get('code')?.invalid && verificationCodeForm.get('code')?.touched">
+                Please enter a valid code.
+            </div>
+        </div>
+        <div class="w-full mb-2">
+            <button type="submit" [disabled]="verificationCodeForm.invalid || isLoading"
+                class="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-[#A11A29] hover:bg-[#961626] rounded-[12px]">
+                {{ isLoading ? 'Verifying...' : 'Verify code' }}
+            </button>
+        </div>
+        <div class="w-full mb-2">
+            <button type="button" (click)="onBack()"
+                class="w-full flex justify-center items-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 bg-transparent hover:bg-gray-50 rounded-[12px]">
+                Back
+            </button>
+        </div>
+    </form>
+</div>

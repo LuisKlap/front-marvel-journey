@@ -1,1 +1,59 @@
-<p>sign-up works!</p>
+<div>
+  <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+    <div class="mb-4 max-w-[368.63px]">
+      <label for="email" class="block text-sm font-medium text-[#181818]">Email</label>
+      <input type="email" id="email" formControlName="email" placeholder="Enter your email"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
+      <div class="error" *ngIf="signUpForm.get('email')?.invalid && signUpForm.get('email')?.touched">
+        Please enter a valid email.
+      </div>
+    </div>
+    <div class="mb-4">
+      <label for="password" class="block text-sm font-medium text-[#181818]">Password</label>
+      <input type="password" id="password" formControlName="password" placeholder="*******"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
+      <div class="error" *ngIf="signUpForm.get('password')?.invalid && signUpForm.get('password')?.touched">
+        Password must be at least 6 characters.
+      </div>
+    </div>
+    <div class="mb-4">
+      <label for="confirmPassword" class="block text-sm font-medium text-[#181818]">Confirm Password</label>
+      <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder="*******"
+        class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
+      <div class="error"
+        *ngIf="signUpForm.get('confirmPassword')?.invalid && signUpForm.get('confirmPassword')?.touched">
+        Confirm password is required.
+      </div>
+      <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+    </div>
+    <div class="mb-4">
+      <input type="checkbox" id="terms" formControlName="terms" class="h-4 w-4 border-gray-300 rounded">
+      <label for="terms" class="ml-2 block text-sm text-gray-900">I agree to the terms and conditions.</label>
+      <div class="error" *ngIf="signUpForm.get('terms')?.invalid && signUpForm.get('terms')?.touched">
+        You must agree to the terms and conditions.
+      </div>
+    </div>
+    <div class="mb-4">
+      <input type="checkbox" id="updates" formControlName="updates" class="h-4 w-4 border-gray-300 rounded">
+      <label for="updates" class="ml-2 block text-sm text-gray-900">I agree to receive updates via email.</label>
+    </div>
+    <div class="w-full mb-2">
+      <button type="submit" [disabled]="signUpForm.invalid || isLoading"
+        class="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-[#A11A29] hover:bg-[#961626] rounded-[12px]">
+        {{ isLoading ? 'Sending code...' : 'Verify email' }}
+      </button>
+    </div>
+    <div class="w-full mb-2">
+      <button type="button" (click)="onSignUpWithGoogle()"
+        class="w-full flex justify-center items-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 bg-transparent hover:bg-gray-50 rounded-[12px]">
+        <img src="/logo-google-sing-in.png" alt="Google Icon" class="mr-2 size-7"> Sign up with Google
+      </button>
+    </div>
+    <div>
+      <p class="text-center text-sm text-black mt-3">
+        Already have an account? <a (click)="onSignIn()"
+          class="font-medium text-[#EA454C] hover:text-[#961626] cursor-pointer">Sign in</a>
+      </p>
+    </div>
+  </form>
+</div>

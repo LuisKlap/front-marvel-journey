@@ -11,7 +11,7 @@
                 <app-sign-up *ngSwitchCase="'sign-up'" (navigate)="navigateTo($event)"></app-sign-up>
                 <app-forgot-password *ngSwitchCase="'forgot-password'"
                     (navigate)="navigateTo($event)"></app-forgot-password>
-                <app-verification-code *ngSwitchCase="'verification-code'"
+                <app-verification-code *ngSwitchCase="'verification-code'" [origin]="origin"
                     (navigate)="navigateTo($event)"></app-verification-code>
                 <app-reset-password *ngSwitchCase="'reset-password'"
                     (navigate)="navigateTo($event)"></app-reset-password>

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common'; // Adicione esta linha
+import { CommonModule } from '@angular/common';
 import { Component,  ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -6,7 +6,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-reset-password',
   standalone: true,
-  imports: [ReactiveFormsModule, CommonModule], // Adicione CommonModule aqui
+  imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './reset-password.component.html',
   styleUrls: ['./reset-password.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -26,7 +26,6 @@ export class ResetPasswordComponent {
     });
   }
 
-  // Lida com o envio do formulário
   onSubmit() {
     if (this.resetPasswordForm.invalid) {
       return;
@@ -34,7 +33,6 @@ export class ResetPasswordComponent {
 
     const { password, confirmPassword } = this.resetPasswordForm.value;
 
-    // Verifica se as senhas coincidem
     if (password !== confirmPassword) {
       this.errorMessage = 'Passwords do not match.';
       return;
@@ -43,11 +41,10 @@ export class ResetPasswordComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    // Simulação de redefinição de senha (substitua pela chamada real ao backend)
     setTimeout(() => {
       this.isLoading = false;
       console.log('Password reset successfully!');
-      this.router.navigate(['/sign-in']); // Redireciona para a página de login
+      this.router.navigate(['/sign-in']);
     }, 2000);
   }
 }

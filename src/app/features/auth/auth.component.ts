@@ -25,11 +25,16 @@ import { ResetPasswordComponent } from './components/reset-password/reset-passwo
 export class AuthComponent {
   currentStep: 'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password' = 'sign-in';
   welcomeMessage: string = 'Welcome back! Please enter your details.';
+  origin: 'sign-up' | 'forgot-password' = 'sign-up';
 
   constructor(private router: Router) { }
 
   navigateTo(step: 'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password'): void {
     this.currentStep = step;
+    if (step === 'verification-code') {
+      this.origin = this.currentStep === 'sign-up' ? 'sign-up' : 'forgot-password';
+    }
+    this.router.navigate([`/auth/${step}`]);
   }
 
   redirectTo(route: string): void {

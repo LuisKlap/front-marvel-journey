@@ -1,31 +1,29 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-forgot-password',
   standalone: true,
   imports: [ReactiveFormsModule, CommonModule],
   templateUrl: './forgot-password.component.html',
-  styleUrl: './forgot-password.component.css',
+  styleUrls: ['./forgot-password.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ForgotPasswordComponent {
   
-  @Output() navigate = new EventEmitter<'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password'>();
+  @Output() navigate = new EventEmitter<'sign-up' | 'verification-code'>();
   
   forgotPasswordForm: FormGroup;
   isLoading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
   }
-
-  // Lida com o envio do formulário
+  
   onSubmit() {
     if (this.forgotPasswordForm.invalid) {
       return;
@@ -36,11 +34,18 @@ export class ForgotPasswordComponent {
 
     const { email } = this.forgotPasswordForm.value;
 
-    // Simulação de envio de código (substitua pela chamada real ao backend)
     setTimeout(() => {
       this.isLoading = false;
       console.log('Código enviado para:', email);
-      this.router.navigate(['/verification-code']); // Redireciona para a página do código
+      this.navigate.emit('verification-code');
     }, 2000);
+  }
+
+  onSignUp() {
+    this.navigate.emit('sign-up');
+  }
+
+  onSignInWithGoogle() {
+    console.log('Sign in with Google');
   }
 }
