@@ -15,7 +15,6 @@ export class VerificationCodeComponent {
 
   @Input() origin: 'sign-up' | 'forgot-password' = 'sign-up';
   @Output() navigate = new EventEmitter<'sign-in' | 'sign-up' | 'forgot-password' | 'reset-password'>();
-
   verificationCodeForm: FormGroup;
   isLoading = false;
   errorMessage = '';
@@ -38,7 +37,6 @@ export class VerificationCodeComponent {
 
     setTimeout(() => {
       this.isLoading = false;
-      console.log('Código verificado:', code);
       if (this.origin === 'sign-up') {
         this.navigate.emit('sign-in');
       } else if (this.origin === 'forgot-password') {
@@ -48,6 +46,10 @@ export class VerificationCodeComponent {
   }
 
   onBack() {
-    this.navigate.emit('sign-up');
+    if (this.origin === 'sign-up') {
+      this.navigate.emit('sign-up');
+    } else if (this.origin === 'forgot-password') {
+      this.navigate.emit('forgot-password');
+    }
   }
 }

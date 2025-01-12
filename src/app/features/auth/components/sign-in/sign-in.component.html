@@ -1,49 +1,47 @@
-<div>
-  <form [formGroup]="signInForm" (ngSubmit)="onSignIn()">
-    <div class="mb-4 max-w-[368.63px]">
-      <label for="email" class="block text-sm font-medium text-[#181818]">Email</label>
-      <input type="email" id="email" formControlName="email" placeholder="Enter your email"
-        class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
-      <div class="error" *ngIf="signInForm.get('email')?.invalid && signInForm.get('email')?.touched">
-        Please enter a valid email.
-      </div>
+<form [formGroup]="signInForm" (ngSubmit)="onSignIn()">
+  <div class="mb-4 w-full">
+    <label for="email" class="block text-sm font-medium text-[#181818]">Email</label>
+    <input type="email" id="email" formControlName="email" placeholder="Enter your email"
+      class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
+    <div class="error" *ngIf="signInForm.get('email')?.invalid && signInForm.get('email')?.touched">
+      Please enter a valid email.
     </div>
-    <div class="mb-4">
-      <label for="password" class="block text-sm font-medium text-[#181818]">Password</label>
-      <input type="password" formControlName="password" id="password" placeholder="*******"
-        class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
-      <div class="error" *ngIf="signInForm.get('password')?.invalid && signInForm.get('password')?.touched">
-        Password is required.
-      </div>
+  </div>
+  <div class="mb-9 w-full">
+    <label for="password" class="block text-sm font-medium text-[#181818]">Password</label>
+    <input type="password" formControlName="password" id="password" placeholder="*******"
+      class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
+    <div class="error" *ngIf="signInForm.get('password')?.invalid && signInForm.get('password')?.touched">
+      Password is required.
     </div>
-    <div class="w-full flex items-center justify-between mb-1">
-      <div class="flex items-center">
-        <input id="remember_me" type="checkbox" formControlName="rememberMe"
-          class="h-4 w-4 border-gray-300 rounded">
-        <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
-      </div>
-      <div class="text-sm">
-        <button type="button" (click)="onForgotPassword()">
-          <p class="font-medium text-[#EA454C]">Forgot password?</p>
-        </button>
-      </div>
-    </div>
-    <div class="w-full mb-2">
-      <button type="submit" [disabled]="signInForm.invalid" class="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-[#A11A29] hover:bg-[#961626] rounded-[12px]">
-        Sign In
-      </button>
-    </div>
-    <div class="w-full">
-      <button type="button"
-        class="w-full flex justify-center items-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 bg-transparent hover:bg-gray-50 rounded-[12px]">
-        <img src="/logo-google-sing-in.png" alt="Google Icon" class="mr-2 size-7"> Sign in with Google
-      </button>
+  </div>
+  <div class="w-full flex items-center justify-between mb-1">
+    <div class="flex items-center">
+      <input id="remember_me" type="checkbox" formControlName="rememberMe" class="h-4 w-4 border-gray-300 rounded">
+      <label for="remember_me" class="ml-2 block text-sm text-gray-900">Remember me</label>
     </div>
     <div>
-      <p class="text-center text-sm text-black mt-3">
-        Don't have an account? <a class="font-medium text-[#EA454C] hover:text-[#961626] cursor-pointer"
-          (click)="onSignUp()">Sign up</a>
-      </p>
+      <button type="button" (click)="onForgotPassword()">
+        <p class="font-medium text-[#EA454C] text-sm">Forgot password?</p>
+      </button>
     </div>
-  </form>
-</div>
+  </div>
+  <div class="w-full mb-2">
+    <button type="submit" [disabled]="signInForm.invalid"
+      class="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-[#A11A29] hover:bg-[#961626] rounded-[12px]">
+      Sign In
+    </button>
+  </div>
+  <div class="w-full">
+    <button type="button"
+      class="w-full flex justify-center items-center py-2 px-4 border border-gray-300 shadow-sm text-sm font-medium text-gray-700 bg-transparent hover:bg-gray-50 rounded-[12px]">
+      <img src="/logo-google-sing-in.png" alt="Google Icon" class="mr-2 size-7"> Sign in with Google
+    </button>
+  </div>
+  <div>
+    <p class="text-center text-sm text-black mt-3">
+      Don't have an account? <a class="font-medium text-[#EA454C] hover:text-[#961626] cursor-pointer"
+        (click)="onSignUp()">Sign up</a>
+    </p>
+  </div>
+</form>

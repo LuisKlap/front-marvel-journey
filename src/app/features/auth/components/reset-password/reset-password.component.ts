@@ -44,7 +44,7 @@ export class ResetPasswordComponent {
     setTimeout(() => {
       this.isLoading = false;
       console.log('Password reset successfully!');
-      this.router.navigate(['/sign-in']);
+      this.navigate.emit('sign-in');
     }, 2000);
   }
 }

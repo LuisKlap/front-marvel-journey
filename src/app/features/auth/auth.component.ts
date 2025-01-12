@@ -30,10 +30,10 @@ export class AuthComponent {
   constructor(private router: Router) { }
 
   navigateTo(step: 'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password'): void {
-    this.currentStep = step;
     if (step === 'verification-code') {
       this.origin = this.currentStep === 'sign-up' ? 'sign-up' : 'forgot-password';
     }
+    this.currentStep = step;
     this.router.navigate([`/auth/${step}`]);
   }
 
