@@ -5,7 +5,7 @@
             <p class="text-white font-semibold text-base mt-1">{{welcomeMessage}}</p>
         </div>
         <div
-            class="w-full min-h-[398px] max-h-[504px] h-full rounded-t-2xl px-16 py-6 gap-4">
+            class="w-full min-h-[398px] max-h-[504px] h-full rounded-t-2xl px-14 py-6 gap-4">
             <ng-container [ngSwitch]="currentStep" class="w-full min-h-[398px] h-full rounded-t-2xl flex flex-col items-center justify-between">
                 <app-sign-in *ngSwitchCase="'sign-in'" (navigate)="navigateTo($event)"></app-sign-in>
                 <app-sign-up *ngSwitchCase="'sign-up'" (navigate)="navigateTo($event)"></app-sign-up>
