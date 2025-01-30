@@ -27,9 +27,6 @@
     <div class="w-full mb-4 flex flex-row">
       <input type="checkbox" id="terms" formControlName="terms" class="h-4 w-4 border-gray-300 rounded">
       <label for="terms" class="ml-2 block text-sm text-gray-900">I agree to the terms and conditions.</label>
-      <div class="error" *ngIf="signUpForm.get('terms')?.invalid && signUpForm.get('terms')?.touched">
-        You must agree to the terms and conditions.
-      </div>
     </div>
     <div class="w-full mb-4 flex flex-row">
       <input type="checkbox" id="updates" formControlName="updates" class="h-4 w-4 border-gray-300 rounded">
