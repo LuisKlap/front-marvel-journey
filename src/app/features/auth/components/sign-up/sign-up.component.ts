@@ -99,15 +99,15 @@ export class SignUpComponent {
     this.errorMessage = '';
 
     this.authService.register(userData).subscribe({
-      next: () => {
+      next: (response) => {
         this.isLoading = false;
-        console.log('User registered successfully:', userData);
+        console.log('User registered successfully:', response);
         this.navigate.emit('verification-code');
       },
       error: (error) => {
         this.isLoading = false;
-        this.errorMessage = 'Registration failed. Please try again.';
         console.error('Registration error:', error);
+        this.errorMessage = 'Registration failed. Please try again.';
       }
     });
   }
