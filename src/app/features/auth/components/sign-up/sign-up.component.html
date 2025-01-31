@@ -34,7 +34,7 @@
     </div>
     <div class="w-full mb-2">
       <button type="submit" [disabled]="signUpForm.invalid || isLoading"
-        class="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-[#A11A29] hover:bg-[#961626] rounded-[12px]">
+        class="w-full flex justify-center py-3 px-4 border border-transparent shadow-sm text-sm font-medium text-white bg-[#A11A29] hover:bg-[#961626] rounded-[12px] disabled:bg-gray-400 disabled:cursor-not-allowed disabled:opacity-60">
         {{ isLoading ? 'Sending code...' : 'Verify email' }}
       </button>
     </div>

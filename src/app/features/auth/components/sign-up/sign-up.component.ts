@@ -2,6 +2,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { IpService } from '../../../../services/ip.service';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -19,14 +21,19 @@ export class SignUpComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private ipService: IpService, private authService: AuthService) {
     this.signUpForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.pattern(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/)]],
       confirmPassword: ['', [Validators.required]],
       terms: [false, Validators.requiredTrue],
-      updates: [false]
+      updates: [false],
+      device: [''],
+      ipAddress: [''],
+      userAgent: ['']
     });
+
+    this.setDeviceDetails();
   }
 
   get email() {
@@ -41,26 +48,68 @@ export class SignUpComponent {
     return this.signUpForm.get('confirmPassword');
   }
 
+  setDeviceDetails() {
+    const deviceType = this.getDeviceType();
+    this.signUpForm.patchValue({
+      device: deviceType,
+      userAgent: navigator.userAgent
+    });
+
+    this.ipService.getIpAddress().subscribe((data: any) => {
+      this.signUpForm.patchValue({
+        ipAddress: data.ip
+      });
+    });
+  }
+
+  getDeviceType(): string {
+    const userAgent = navigator.userAgent;
+    if (/mobile/i.test(userAgent)) {
+      return 'mobile';
+    }
+    if (/tablet/i.test(userAgent)) {
+      return 'tablet';
+    }
+    return 'web';
+  }
+
   onSubmit() {
     if (this.signUpForm.invalid) {
       return;
     }
 
-    const { email, password, confirmPassword } = this.signUpForm.value;
+    const { email, password, confirmPassword, terms, updates, device, ipAddress, userAgent } = this.signUpForm.value;
 
     if (password !== confirmPassword) {
       this.errorMessage = 'Passwords do not match.';
       return;
     }
 
+    const userData = {
+      email,
+      password,
+      termsAccepted: terms,
+      updates,
+      device,
+      ipAddress,
+      userAgent
+    };
+
     this.isLoading = true;
     this.errorMessage = '';
 
-    setTimeout(() => {
-      this.isLoading = false;
-      console.log('User registered successfully:', email);
-      this.navigate.emit('verification-code');
-    }, 2000);
+    this.authService.register(userData).subscribe({
+      next: () => {
+        this.isLoading = false;
+        console.log('User registered successfully:', userData);
+        this.navigate.emit('verification-code');
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Registration failed. Please try again.';
+        console.error('Registration error:', error);
+      }
+    });
   }
 
   onSignIn() {

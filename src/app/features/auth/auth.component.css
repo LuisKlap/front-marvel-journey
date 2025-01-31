@@ -1,6 +1,6 @@
 .min-h-screen {
     position: relative;
-    background-image: url('/background-login.jpg');
+    background-image: url('/background-login.png');
     background-size: cover;
     background-position: center;
 }
