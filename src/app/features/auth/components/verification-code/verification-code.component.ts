@@ -1,7 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
+import { UserVerificationCode } from '../../models/auth.model';
 
 @Component({
   selector: 'app-verification-code',
@@ -12,16 +14,20 @@ import { Router } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VerificationCodeComponent {
-
   @Input() origin: 'sign-up' | 'forgot-password' = 'sign-up';
-  @Output() navigate = new EventEmitter<'sign-in' | 'sign-up' | 'forgot-password' | 'reset-password'>();
+  @Output() navigate = new EventEmitter<{ step: 'sign-in' | 'sign-up' | 'forgot-password' | 'reset-password', email?: string }>();
   verificationCodeForm: FormGroup;
   isLoading = false;
   errorMessage = '';
+  email: string = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
     this.verificationCodeForm = this.fb.group({
       code: ['', [Validators.required]],
+    });
+
+    this.route.queryParams.subscribe(params => {
+      this.email = params['email'];
     });
   }
 
@@ -34,22 +40,30 @@ export class VerificationCodeComponent {
     this.errorMessage = '';
 
     const { code } = this.verificationCodeForm.value;
+    const data: UserVerificationCode = { email: this.email, code };
 
-    setTimeout(() => {
-      this.isLoading = false;
-      if (this.origin === 'sign-up') {
-        this.navigate.emit('sign-in');
-      } else if (this.origin === 'forgot-password') {
-        this.navigate.emit('reset-password');
+    this.authService.verificationCode(data).subscribe({
+      next: () => {
+        this.isLoading = false;
+        if (this.origin === 'sign-up') {
+          this.navigate.emit({ step: 'sign-in'});
+        } else if (this.origin === 'forgot-password') {
+          this.navigate.emit({ step: 'reset-password'});
+        }
+      },
+      error: (error) => {
+        this.isLoading = false;
+        console.error('Verification error:', error);
+        this.errorMessage = 'Verification failed. Please try again.';
       }
-    }, 2000);
+    });
   }
 
   onBack() {
     if (this.origin === 'sign-up') {
-      this.navigate.emit('sign-up');
+      this.navigate.emit({ step: 'sign-up'});
     } else if (this.origin === 'forgot-password') {
-      this.navigate.emit('forgot-password');
+      this.navigate.emit({ step: 'forgot-password'});
     }
   }
 }
