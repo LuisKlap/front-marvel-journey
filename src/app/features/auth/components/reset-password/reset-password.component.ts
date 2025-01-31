@@ -13,7 +13,7 @@ import { Router } from '@angular/router';
 })
 export class ResetPasswordComponent {
   
-  @Output() navigate = new EventEmitter<'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password'>();
+  @Output() navigate = new EventEmitter<{ step: 'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password', email?: string }>();
   
   resetPasswordForm: FormGroup;
   isLoading = false;
@@ -44,7 +44,7 @@ export class ResetPasswordComponent {
     setTimeout(() => {
       this.isLoading = false;
       console.log('Password reset successfully!');
-      this.navigate.emit('sign-in');
+      this.navigate.emit({ step: 'sign-in' });
     }, 2000);
   }
 }

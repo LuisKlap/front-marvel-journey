@@ -11,7 +11,7 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SignInComponent {
-  @Output() navigate = new EventEmitter<'sign-up' | 'forgot-password'>();
+  @Output() navigate = new EventEmitter<{ step: 'sign-up' | 'forgot-password', email?: string }>();
 
   signInForm: FormGroup;
 
@@ -33,10 +33,11 @@ export class SignInComponent {
   }
 
   onSignUp(): void {
-    this.navigate.emit('sign-up');
+    this.navigate.emit({ step: 'sign-up' });
   }
 
   onForgotPassword(): void {
-    this.navigate.emit('forgot-password');
+    const { email } = this.signInForm.value;
+    this.navigate.emit({ step: 'forgot-password', email });
   }
 }

@@ -1,4 +1,4 @@
-export interface User {
+export interface UserRegister {
   email: string;
   password: string;
   confirmPassword?: string;
@@ -8,3 +8,9 @@ export interface User {
   ipAddress: string;
   userAgent: string;
 }
+
+export interface UserVerificationCode {
+  email: string;
+  code: string;
+}
+

@@ -29,12 +29,13 @@ export class AuthComponent {
 
   constructor(private router: Router) { }
 
-  navigateTo(step: 'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password'): void {
+  navigateTo(event: { step: 'sign-in' | 'sign-up' | 'forgot-password' | 'verification-code' | 'reset-password', email?: string }): void {
+    const { step, email } = event;
     if (step === 'verification-code') {
       this.origin = this.currentStep === 'sign-up' ? 'sign-up' : 'forgot-password';
     }
     this.currentStep = step;
-    this.router.navigate([`/auth/${step}`]);
+    this.router.navigate([`/auth/${step}`], { queryParams: { email } });
   }
 
   redirectTo(route: string): void {

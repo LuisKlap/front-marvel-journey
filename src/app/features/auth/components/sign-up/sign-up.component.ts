@@ -15,7 +15,7 @@ import { AuthService } from '../../service/auth.service';
 })
 export class SignUpComponent {
 
-  @Output() navigate = new EventEmitter<'sign-in' | 'verification-code'>();
+  @Output() navigate = new EventEmitter<{ step: 'sign-in' | 'verification-code', email?: string }>();
 
   signUpForm: FormGroup;
   isLoading = false;
@@ -102,7 +102,7 @@ export class SignUpComponent {
       next: (response) => {
         this.isLoading = false;
         console.log('User registered successfully:', response);
-        this.navigate.emit('verification-code');
+        this.navigate.emit({ step: 'verification-code', email });
       },
       error: (error) => {
         this.isLoading = false;
@@ -113,7 +113,7 @@ export class SignUpComponent {
   }
 
   onSignIn() {
-    this.navigate.emit('sign-in');
+    this.navigate.emit({ step: 'sign-in' });
   }
 
   onSignUpWithGoogle() {

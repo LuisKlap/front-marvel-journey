@@ -12,7 +12,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 })
 export class ForgotPasswordComponent {
   
-  @Output() navigate = new EventEmitter<'sign-up' | 'verification-code'>();
+  @Output() navigate = new EventEmitter<{ step: 'sign-up' | 'verification-code', email?: string }>();
   
   forgotPasswordForm: FormGroup;
   isLoading = false;
@@ -37,12 +37,12 @@ export class ForgotPasswordComponent {
     setTimeout(() => {
       this.isLoading = false;
       console.log('Código enviado para:', email);
-      this.navigate.emit('verification-code');
+      this.navigate.emit({ step: 'verification-code', email });
     }, 2000);
   }
 
   onSignUp() {
-    this.navigate.emit('sign-up');
+    this.navigate.emit({ step: 'sign-up' });
   }
 
   onSignInWithGoogle() {
