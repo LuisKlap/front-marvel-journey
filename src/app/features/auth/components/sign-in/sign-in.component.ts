@@ -26,7 +26,6 @@ export class SignInComponent {
   onSignIn(): void {
     if (this.signInForm.valid) {
       console.log('Logging in:', this.signInForm.value);
-      // Aqui você faria a integração com o backend
     } else {
       console.error('Form is invalid');
     }

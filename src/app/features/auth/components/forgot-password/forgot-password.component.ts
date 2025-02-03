@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-forgot-password',
@@ -18,7 +19,7 @@ export class ForgotPasswordComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -34,11 +35,21 @@ export class ForgotPasswordComponent {
 
     const { email } = this.forgotPasswordForm.value;
 
-    setTimeout(() => {
-      this.isLoading = false;
-      console.log('Código enviado para:', email);
-      this.navigate.emit({ step: 'verification-code', email });
-    }, 2000);
+    this.authService.checkEmail(email).subscribe({
+      next: () => {
+        this.isLoading = false;
+        console.log('Código enviado para:', email);
+        this.navigate.emit({ step: 'verification-code', email });
+      },
+      error: (error) => {
+        this.isLoading = false;
+        if (error.status === 404) {
+          this.errorMessage = 'User not found. Please check your email and try again.';
+        } else {
+          this.errorMessage = 'An unexpected error occurred. Please try again later.';
+        }
+      }
+    });
   }
 
   onSignUp() {

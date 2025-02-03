@@ -3,10 +3,7 @@
         <label for="code" class="block text-sm font-medium text-[#181818]">Verification code</label>
         <input type="text" id="code" formControlName="code" placeholder="Enter the code you received"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
-        <div class="error"
-            *ngIf="verificationCodeForm.get('code')?.invalid && verificationCodeForm.get('code')?.touched">
-            Please enter a valid code.
-        </div>
+        <div class="error" *ngIf="errorMessage" [innerHTML]="errorMessage"></div>
     </div>
     <div>
         <div class="w-full mb-2">

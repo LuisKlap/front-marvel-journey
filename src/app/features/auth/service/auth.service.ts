@@ -20,4 +20,9 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(`${this.apiUrl}/verify-email`, user, { headers, responseType: 'text' });
   }
+
+  checkEmail(email: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.apiUrl}/check-email`, { email }, { headers });
+  }
 }
