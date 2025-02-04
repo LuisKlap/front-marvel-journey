@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { AuthService } from '../../service/auth.service';
 
@@ -19,7 +19,7 @@ export class ForgotPasswordComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private cdr: ChangeDetectorRef) {
     this.forgotPasswordForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
     });
@@ -32,14 +32,25 @@ export class ForgotPasswordComponent {
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.cdr.markForCheck();
 
     const { email } = this.forgotPasswordForm.value;
 
     this.authService.checkEmail(email).subscribe({
       next: () => {
-        this.isLoading = false;
-        console.log('Código enviado para:', email);
-        this.navigate.emit({ step: 'verification-code', email });
+        this.authService.sendVerificationCode(email).subscribe({
+          next: () => {
+            this.isLoading = false;
+            console.log('Código enviado para:', email);
+            this.navigate.emit({ step: 'verification-code', email });
+            this.cdr.detectChanges();
+          },
+          error: () => {
+            this.isLoading = false;
+            this.errorMessage = 'Failed to send verification code. Please try again later.';
+            this.cdr.detectChanges();
+          }
+        });
       },
       error: (error) => {
         this.isLoading = false;
@@ -48,6 +59,7 @@ export class ForgotPasswordComponent {
         } else {
           this.errorMessage = 'An unexpected error occurred. Please try again later.';
         }
+        this.cdr.detectChanges();
       }
     });
   }

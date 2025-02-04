@@ -9,7 +9,7 @@ import { UserRegister, UserVerificationCode } from '../models/auth.model';
 export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   register(user: UserRegister): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
@@ -19,6 +19,11 @@ export class AuthService {
   verificationCode(user: UserVerificationCode): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(`${this.apiUrl}/verify-email`, user, { headers, responseType: 'text' });
+  }
+
+  sendVerificationCode(email: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.apiUrl}/send-verification-code`, { email }, { headers, responseType: 'text' });
   }
 
   checkEmail(email: string): Observable<any> {
