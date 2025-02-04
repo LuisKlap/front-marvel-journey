@@ -2,8 +2,13 @@
     <div class="w-full mb-4">
         <label for="code" class="block text-sm font-medium text-[#181818]">Verification code</label>
         <input type="text" id="code" formControlName="code" placeholder="Enter the code you received"
+            [ngClass]="{'border-red-500': verificationCodeForm.get('code')?.invalid && (verificationCodeForm.get('code')?.dirty || verificationCodeForm.get('code')?.touched)}"
             class="mt-1 block w-full px-3 py-2 border border-gray-300 shadow-sm sm:text-sm rounded-[12px]" required>
-        <div class="error" *ngIf="errorMessage" [innerHTML]="errorMessage"></div>
+        <div class="error text-base text-red-500" *ngIf="errorMessage">
+            {{ errorMessage }}
+            <button *ngIf="showResendButton" (click)="resendCode($event)" id="resendButton"
+                class="text-red-500 underline">Send again</button>
+        </div>
     </div>
     <div>
         <div class="w-full mb-2">

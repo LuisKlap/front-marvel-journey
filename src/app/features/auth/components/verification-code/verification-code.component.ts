@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, ChangeDetectorRef } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { UserVerificationCode } from '../../models/auth.model';
 
@@ -20,8 +20,9 @@ export class VerificationCodeComponent {
   isLoading = false;
   errorMessage = '';
   email: string = '';
+  showResendButton = false;
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private authService: AuthService) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private authService: AuthService, private cdr: ChangeDetectorRef) {
     this.verificationCodeForm = this.fb.group({
       code: ['', [Validators.required]],
     });
@@ -38,19 +39,22 @@ export class VerificationCodeComponent {
 
     this.isLoading = true;
     this.errorMessage = '';
+    this.cdr.markForCheck();
 
     const { code } = this.verificationCodeForm.value;
     const data: UserVerificationCode = { email: this.email, code };
     console.log('Verifying code:', data);
-    var response = this.authService.verificationCode(data).subscribe({
+
+    this.authService.verificationCode(data).subscribe({
       next: () => {
         this.isLoading = false;
         console.log('Verification successful');
         if (this.origin === 'sign-up') {
-          this.navigate.emit({ step: 'sign-in'});
+          this.navigate.emit({ step: 'sign-in' });
         } else if (this.origin === 'forgot-password') {
-          this.navigate.emit({ step: 'reset-password'});
+          this.navigate.emit({ step: 'reset-password' });
         }
+        this.cdr.detectChanges();
       },
       error: (error) => {
         this.isLoading = false;
@@ -60,48 +64,46 @@ export class VerificationCodeComponent {
         } else if (error.status === 400) {
           const errorCode = error.error.error;
           if (errorCode === 'INVALID_VERIFICATION_CODE') {
-            this.errorMessage = 'Invalid verification code. Please try again. <a href="#" (click)="resendCode($event)">Send again</a>';
+            this.errorMessage = 'Invalid verification code.';
+            this.showResendButton = true;
           } else if (errorCode === 'EXPIRED_VERIFICATION_CODE') {
-            this.errorMessage = 'Verification code expired. Please request a new code. <a href="#" (click)="resendCode($event)">Send again</a>';
+            this.errorMessage = 'Verification code expired. Please request a new code.';
+            this.showResendButton = true;
           } else {
-            this.errorMessage = 'Verification failed. Please try again.';
+            this.errorMessage = 'Verification failed.';
+            this.showResendButton = true;
           }
         } else {
           this.errorMessage = 'An unexpected error occurred. Please try again later.';
         }
+        this.cdr.detectChanges();
       }
     });
-    console.log('Response:', response);
   }
 
   onBack() {
     if (this.origin === 'sign-up') {
-      this.navigate.emit({ step: 'sign-up'});
+      this.navigate.emit({ step: 'sign-up' });
     } else if (this.origin === 'forgot-password') {
-      this.navigate.emit({ step: 'forgot-password'});
+      this.navigate.emit({ step: 'forgot-password' });
     }
   }
 
   resendCode(event: Event) {
     event.preventDefault();
-    if (this.verificationCodeForm.invalid) {
-      this.errorMessage = 'Please enter a valid code before resending.';
-      return;
-    }
 
-    this.isLoading = true;
-    const { code } = this.verificationCodeForm.value;
-    const data: UserVerificationCode = { email: this.email, code };
+    this.errorMessage = '';
+    this.cdr.markForCheck();
 
-    this.authService.verificationCode(data).subscribe({
+    this.authService.sendVerificationCode(this.email).subscribe({
       next: () => {
-        this.isLoading = false;
         console.log('Verification code resent successfully');
+        this.cdr.detectChanges();
       },
       error: (error) => {
-        this.isLoading = false;
         console.error('Error resending verification code:', error);
         this.errorMessage = 'Failed to resend verification code. Please try again later.';
+        this.cdr.detectChanges();
       }
     });
   }
