@@ -30,4 +30,9 @@ export class AuthService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(`${this.apiUrl}/check-email`, { email }, { headers });
   }
+
+  signIn(email: string, password: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.apiUrl}/login`, { email, password }, { headers });
+  }
 }

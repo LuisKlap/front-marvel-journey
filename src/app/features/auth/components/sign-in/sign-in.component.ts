@@ -1,6 +1,8 @@
 import { Component, EventEmitter, Output, ChangeDetectionStrategy } from '@angular/core';
 import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../service/auth.service';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-sign-in',
@@ -15,7 +17,7 @@ export class SignInComponent {
 
   signInForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private authService: AuthService, private cookieService: CookieService) {
     this.signInForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -25,7 +27,17 @@ export class SignInComponent {
 
   onSignIn(): void {
     if (this.signInForm.valid) {
-      console.log('Logging in:', this.signInForm.value);
+      const { email, password } = this.signInForm.value;
+      this.authService.signIn(email, password).subscribe({
+        next: (response) => {
+          console.log('Login successful:', response);
+          this.cookieService.set('token', response.token);
+          this.cookieService.set('refresh-token', response.refreshToken);
+        },
+        error: (error) => {
+          console.error('Login failed:', error);
+        }
+      });
     } else {
       console.error('Form is invalid');
     }
