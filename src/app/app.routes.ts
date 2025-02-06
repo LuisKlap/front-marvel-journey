@@ -5,6 +5,7 @@ import { ForgotPasswordComponent } from './features/auth/components/forgot-passw
 import { SignUpComponent } from './features/auth/components/sign-up/sign-up.component';
 import { VerificationCodeComponent } from './features/auth/components/verification-code/verification-code.component';
 import { ResetPasswordComponent } from './features/auth/components/reset-password/reset-password.component';
+import { HomeComponent } from './features/home/components/home/home.component';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'auth/sign-in', pathMatch: 'full' },
@@ -17,5 +18,6 @@ export const routes: Routes = [
       { path: 'reset-password', component: ResetPasswordComponent },
     ]
   },
+  { path: 'home', component: HomeComponent },
   { path: '**', redirectTo: 'auth/sign-in' }
 ];
