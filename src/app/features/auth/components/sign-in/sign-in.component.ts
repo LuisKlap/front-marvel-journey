@@ -3,7 +3,7 @@ import { ReactiveFormsModule, FormBuilder, Validators, FormGroup } from '@angula
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../service/auth.service';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router'; // Importa o Router
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sign-in',
@@ -18,7 +18,7 @@ export class SignInComponent implements OnInit {
 
   signInForm: FormGroup;
 
-  constructor(private fb: FormBuilder, private authService: AuthService, private cookieService: CookieService, private router: Router) { // Adiciona o Router no construtor
+  constructor(private fb: FormBuilder, private authService: AuthService, private cookieService: CookieService, private router: Router) {
     this.signInForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -46,7 +46,8 @@ export class SignInComponent implements OnInit {
           } else {
             localStorage.removeItem('rememberedEmail');
           }
-          this.router.navigate(['/home']); // Redireciona para HomeComponent após o login bem-sucedido
+          this.authService.setAuthenticated(true);
+          this.router.navigate(['/home']);
         },
         error: (error) => {
           console.error('Login failed:', error);

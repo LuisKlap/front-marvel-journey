@@ -8,6 +8,7 @@ import { UserRegister, UserVerificationCode } from '../models/auth.model';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
+  private authenticated = true;
 
   constructor(private http: HttpClient) { }
 
@@ -34,5 +35,13 @@ export class AuthService {
   signIn(email: string, password: string): Observable<any> {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     return this.http.post(`${this.apiUrl}/login`, { email, password }, { headers });
+  }
+
+  setAuthenticated(authenticated: boolean): void {
+    this.authenticated = authenticated;
+  }
+
+  isAuthenticated(): boolean {
+    return this.authenticated;
   }
 }
