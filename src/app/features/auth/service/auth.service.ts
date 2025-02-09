@@ -8,7 +8,7 @@ import { UserRegister, UserVerificationCode } from '../models/auth.model';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:8080/auth';
-  private authenticated = true;
+  private authenticated = false;
 
   constructor(private http: HttpClient) { }
 

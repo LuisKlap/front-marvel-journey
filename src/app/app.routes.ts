@@ -8,16 +8,16 @@ import { ResetPasswordComponent } from './features/auth/components/reset-passwor
 import { HomeComponent } from './features/home/components/home/home.component';
 
 export const routes: Routes = [
-  // { path: '', redirectTo: 'auth/sign-in', pathMatch: 'full' },
-  // {
-  //   path: 'auth', component: AuthComponent, children: [
-  //     { path: 'sign-in', component: SignInComponent },
-  //     { path: 'sign-up', component: SignUpComponent },
-  //     { path: 'forgot-password', component: ForgotPasswordComponent },
-  //     { path: 'verification-code', component: VerificationCodeComponent },
-  //     { path: 'reset-password', component: ResetPasswordComponent },
-  //   ]
-  // },
+  { path: '', redirectTo: 'auth/sign-in', pathMatch: 'full' },
+  {
+    path: 'auth', component: AuthComponent, children: [
+      { path: 'sign-in', component: SignInComponent },
+      { path: 'sign-up', component: SignUpComponent },
+      { path: 'forgot-password', component: ForgotPasswordComponent },
+      { path: 'verification-code', component: VerificationCodeComponent },
+      { path: 'reset-password', component: ResetPasswordComponent },
+    ]
+  },
   { path: 'home', component: HomeComponent },
-  // { path: '**', redirectTo: 'auth/sign-in' }
+  { path: '**', redirectTo: 'auth/sign-in' }
 ];
