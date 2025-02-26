@@ -37,6 +37,11 @@ export class AuthService {
     return this.http.post(`${this.apiUrl}/login`, { email, password }, { headers });
   }
 
+  forgotPassword(email: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    return this.http.post(`${this.apiUrl}/forgot-password`, { email }, { headers });
+  }
+
   setAuthenticated(authenticated: boolean): void {
     this.authenticated = authenticated;
   }
