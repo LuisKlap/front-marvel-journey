@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component,  ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
+import { Component, ChangeDetectionStrategy, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../service/auth.service';
 
 @Component({
   selector: 'app-reset-password',
@@ -19,7 +20,7 @@ export class ResetPasswordComponent {
   isLoading = false;
   errorMessage = '';
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(private fb: FormBuilder, private router: Router, private authService: AuthService) {
     this.resetPasswordForm = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       confirmPassword: ['', [Validators.required]],
@@ -41,10 +42,17 @@ export class ResetPasswordComponent {
     this.isLoading = true;
     this.errorMessage = '';
 
-    setTimeout(() => {
-      this.isLoading = false;
-      console.log('Password reset successfully!');
-      this.navigate.emit({ step: 'sign-in' });
-    }, 2000);
+    this.authService.resetPassword(password).subscribe({
+      next: () => {
+        this.isLoading = false;
+        console.log('Password reset successfully!');
+        this.navigate.emit({ step: 'sign-in' });
+      },
+      error: (error) => {
+        this.isLoading = false;
+        this.errorMessage = 'Failed to reset password. Please try again later.';
+        console.error('Reset password error:', error);
+      }
+    });
   }
 }
