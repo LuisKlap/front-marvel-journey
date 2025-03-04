@@ -49,4 +49,10 @@ export class AuthService {
   isAuthenticated(): boolean {
     return this.authenticated;
   }
+
+  resetPassword(password: string): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    //todo backend
+    return this.http.post(`${this.apiUrl}/reset-password`, { password }, { headers });
+  }
 }
